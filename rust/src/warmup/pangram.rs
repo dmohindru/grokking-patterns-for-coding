@@ -23,11 +23,26 @@ sentence consists of lower or upper-case English letters.
 
 */
 
-fn pengram(input: String) -> bool {
-    let char = 'A';
+use std::collections::HashSet;
 
-    for c in input.chars() {}
-    todo!()
+fn pangram(input: String) -> bool {
+    /*
+    Time complexity O(n)
+    - We need to loop through each char of a string of size n.
+    - Time complexity of insertion into set is O(1)
+    - Total time complexity = O(n) + O(1) = O(n)
+
+    Space complexity O(1)
+    - HashSet would store max of 26 chars, so constant space is required
+    */
+    let mut char_set: HashSet<char> = HashSet::new();
+    for c in input.chars() {
+        let c = c.to_ascii_uppercase();
+        if c.is_ascii() {
+            char_set.insert(c);
+        }
+    }
+    char_set.len() == 26
 }
 
 #[cfg(test)]
@@ -39,14 +54,23 @@ mod test {
     #[test]
     fn should_return_false_if_sentence_is_not_pengram() {
         let not_pengram_str = String::from_str("This is not a pangram").unwrap();
-        let is_pengram = pengram(not_pengram_str);
+        let is_pengram = pangram(not_pengram_str);
+        assert!(!is_pengram);
+
+        let not_pengram_str = String::from_str("TheQuickBrownFoxJumpsOverTheLazy123").unwrap();
+        let is_pengram = pangram(not_pengram_str);
         assert!(!is_pengram);
     }
 
     #[test]
     fn should_return_true_if_sentence_is_pengram() {
         let pengram_str = String::from_str("TheQuickBrownFoxJumpsOverTheLazyDog").unwrap();
-        let is_pengram = pengram(pengram_str);
+        let is_pengram = pangram(pengram_str);
+        assert!(is_pengram);
+
+        let pengram_str =
+            String::from_str("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").unwrap();
+        let is_pengram = pangram(pengram_str);
         assert!(is_pengram);
     }
 }
