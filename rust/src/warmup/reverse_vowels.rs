@@ -18,14 +18,14 @@
 // DusUgnGires
 fn reverse_vowels(input: String) -> String {
     /*
-    Time Complexity: log(n)
+    Time Complexity: O(n)
     - Converting String to mutable Vec n = log(n)
-    - While loop will run max for n - 1 in worst case scenario e.g "ABCD" = log(n)
+    - While loop will run max for n - 1 in worst case scenario e.g "ABCD" = O(n)
     - Converting mutable vec to string back = log(n)
-    - Total = log(n) + log(n) + log(n) = 3log(n). Ignoring constant term 3, final time complexity log(n)
+    - Total = O(n) + O(n) + O(n) = 3O(n). Ignoring constant term 3, final time complexity O(n)
 
-    Space Complexity: log(N)
-    - Additional space required for creating new string of n chars. Hence space complexity log(n).
+    Space Complexity: O(N)
+    - Additional space required for creating new string of n chars. Hence space complexity O(n).
      */
     let mut chars: Vec<char> = input.chars().collect();
     let mut left: usize = 0;
