@@ -5,3 +5,4 @@ mod palindrome;
 mod pangram;
 mod reverse_vowels;
 mod shortest_distance;
+mod sqrt;
