@@ -24,6 +24,21 @@ Constraints:
 0 <= x <= 231 - 1
 */
 
+/*
+Solution explanation
+- Goal is to find largest value of n such that n * n <= x
+- n would alway in range of 2..x/2
+- To find that number in this range quickly we can use binary search since the
+  time complexity is O(log(N))
+- loop till left < right
+- Find the mid value as left + (right - left) / 2
+- Calculate num as mid * mid
+- If num is equal to input we found the number and return mid value
+- If num is greater than input then move right = mid - 1
+- If num is less than input then move left = mid + 1
+- After loop terminates return right
+*/
+
 fn sqrt(input: u32) -> u32 {
     /*
     Time complexity
