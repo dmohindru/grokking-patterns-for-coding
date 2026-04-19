@@ -17,20 +17,29 @@ Constraints:
 -105 <= arr[i] <= 105
 */
 
+use std::collections::HashMap;
+
 fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
     /*
     Time Complexity
     - Sorting would take O(NLogN) time
-    - Outer loop would run for full input size of N
+    - Outer loop would run for input size of N. Therefore O(N)
+    - Inner loop would also run for input size of N in worst case scenario. Therefore O(N)
+    - Total: O(NLogN) + O(N) * O(N) = O(NLogN) + O(N^2).
+    - Ignoring non dominating terms. Final Time complexity O(N^2)
 
     Space Complexity
+    - This algorithm uses same amount of space irrespective of input size. Therefore O(1)
+    - Sorting requires O(N) additional space
+    - To store the output triples. In worst case it can be O(N^2)
+    - Therefore total: O(N^2)
     */
     input.sort();
     let mut i: usize = 0;
     let mut j: usize;
     let mut k: usize;
     let mut result: Vec<Vec<i32>> = Vec::new();
-    while i < input.len() - 1 {
+    while i < input.len() - 3 {
         j = i + 1;
         k = input.len() - 1;
         let target = 0 - input[i];
@@ -44,6 +53,13 @@ fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
                 j += 1;
                 k -= 1;
             }
+            // // Skip duplicates
+            // while j < k && input[j] == input[j + 1] {
+            //     j += 1;
+            // }
+            // while j < k && input[k] == input[k - 1] {
+            //     k -= 1;
+            // }
         }
         i += 1;
     }
@@ -51,8 +67,39 @@ fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
     result
 }
 
-fn triple_sum_hash_map(mut input: Vec<i32>) -> Vec<Vec<i32>> {
-    todo!()
+fn triple_sum_hash_map(input: Vec<i32>) -> Vec<Vec<i32>> {
+    /*
+    Time complexity
+    - Outer loop runs for size of input n. Therefore O(N)
+    - Inner loop run for almost size of input n. Therefore O(N)
+    - For each loop iteration operations are all O(1)
+    - Total time complexity: O(N^2)
+    Space complexity
+    - This algorithm requires HashMap proportional to input size N. Therefore O(N)
+    - To store the output triples. In worst case it can be O(N^2)
+    - Therefore total: O(N^2)
+     */
+    let mut result: Vec<Vec<i32>> = Vec::new();
+    let mut i: usize = 0;
+    let mut j: usize;
+    while i < input.len() {
+        let mut map: HashMap<i32, usize> = HashMap::new();
+        j = i + 1;
+        let target = 0 - input[i];
+        while j < input.len() {
+            let sub_target = target - input[j];
+            match map.get(&sub_target) {
+                Some(key) => result.push(vec![input[i], input[j], input[*key]]),
+                None => {
+                    map.insert(input[j], j);
+                }
+            };
+            j += 1;
+        }
+        i += 1;
+    }
+
+    result
 }
 
 #[cfg(test)]
