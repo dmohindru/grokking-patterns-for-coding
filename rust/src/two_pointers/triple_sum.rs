@@ -17,8 +17,6 @@ Constraints:
 -105 <= arr[i] <= 105
 */
 
-use std::collections::HashMap;
-
 fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
     /*
     Time Complexity
@@ -35,67 +33,43 @@ fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
     - Therefore total: O(N^2)
     */
     input.sort();
-    let mut i: usize = 0;
-    let mut j: usize;
-    let mut k: usize;
     let mut result: Vec<Vec<i32>> = Vec::new();
-    while i < input.len() - 3 {
-        j = i + 1;
-        k = input.len() - 1;
+    if input.len() < 3 {
+        return result;
+    }
+
+    let mut i: usize = 0;
+    while i + 2 < input.len() {
+        if i > 0 && input[i] == input[i - 1] {
+            i += 1;
+            continue;
+        }
+
+        let mut j: usize = i + 1;
+        let mut k: usize = input.len() - 1;
         let target = 0 - input[i];
+
         while j < k {
-            if input[j] + input[k] > target {
+            let sum = input[j] + input[k];
+            if sum > target {
                 k -= 1;
-            } else if input[j] + input[k] < target {
+            } else if sum < target {
                 j += 1;
             } else {
                 result.push(vec![input[i], input[j], input[k]]);
+
+                while j < k && input[j] == input[j + 1] {
+                    j += 1;
+                }
+                while j < k && input[k] == input[k - 1] {
+                    k -= 1;
+                }
+
                 j += 1;
                 k -= 1;
             }
-            // // Skip duplicates
-            // while j < k && input[j] == input[j + 1] {
-            //     j += 1;
-            // }
-            // while j < k && input[k] == input[k - 1] {
-            //     k -= 1;
-            // }
         }
-        i += 1;
-    }
 
-    result
-}
-
-fn triple_sum_hash_map(input: Vec<i32>) -> Vec<Vec<i32>> {
-    /*
-    Time complexity
-    - Outer loop runs for size of input n. Therefore O(N)
-    - Inner loop run for almost size of input n. Therefore O(N)
-    - For each loop iteration operations are all O(1)
-    - Total time complexity: O(N^2)
-    Space complexity
-    - This algorithm requires HashMap proportional to input size N. Therefore O(N)
-    - To store the output triples. In worst case it can be O(N^2)
-    - Therefore total: O(N^2)
-     */
-    let mut result: Vec<Vec<i32>> = Vec::new();
-    let mut i: usize = 0;
-    let mut j: usize;
-    while i < input.len() {
-        let mut map: HashMap<i32, usize> = HashMap::new();
-        j = i + 1;
-        let target = 0 - input[i];
-        while j < input.len() {
-            let sub_target = target - input[j];
-            match map.get(&sub_target) {
-                Some(key) => result.push(vec![input[i], input[j], input[*key]]),
-                None => {
-                    map.insert(input[j], j);
-                }
-            };
-            j += 1;
-        }
         i += 1;
     }
 
@@ -134,28 +108,17 @@ mod test {
     }
 
     #[test]
-    fn should_return_unique_triplets_for_hash_map_solution() {
-        let test_cases = [
-            (
-                vec![-3, 0, 1, 2, -1, 1, -2],
-                vec![
-                    vec![-3, 1, 2],
-                    vec![-2, 0, 2],
-                    vec![-2, 1, 1],
-                    vec![-1, 0, 1],
-                ],
-            ),
-            (
-                vec![-5, 2, -1, -2, 3],
-                vec![vec![-5, 2, 3], vec![-2, -1, 3]],
-            ),
+    fn should_skip_duplicate_triplets() {
+        let duplicate_cases = [
+            (vec![0, 0, 0, 0], vec![vec![0, 0, 0]]),
+            (vec![-1, 0, 1, -1, 0, 1], vec![vec![-1, 0, 1]]),
+            (vec![-2, 0, 2, 2, 0, -2], vec![vec![-2, 0, 2]]),
         ];
 
-        for (input, expected_result) in test_cases {
-            println!("Running test for {:?}", input);
-            let result = triple_sum_hash_map(input);
-            assert_eq!(expected_result.len(), result.len());
-            assert_eq!(expected_result, normalize(result));
+        for (input, expected) in duplicate_cases {
+            let two_pointer = normalize(triple_sum_two_pointer(input.clone()));
+
+            assert_eq!(expected, two_pointer);
         }
     }
 
