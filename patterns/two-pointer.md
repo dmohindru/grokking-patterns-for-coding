@@ -120,3 +120,42 @@ O(n^2)
 ```
 
 because we intelligently move pointers instead of checking every combination.
+
+## Triple sum to smallest approach
+
+### Core idea
+
+When this condition is true:
+
+```text
+arr[i] + arr[left] + arr[right] < target
+```
+
+Since array is sorted:
+
+```
+arr[i] + arr[left] + arr[left+1] < target
+arr[i] + arr[left] + arr[left+2] < target
+...
+arr[i] + arr[left] + arr[right] < target
+```
+
+So all pairs using this `fixed left` are valid.
+
+That gives:
+
+```
+(right - left)
+```
+
+pairs.
+
+After counting those, we are done with this left.
+
+So we move:
+
+```
+left += 1
+```
+
+to count pairs that begin with the **next left**.
