@@ -1,3 +1,4 @@
+mod dutch_national_flag;
 mod non_duplicate;
 mod remove_instances;
 mod square_sorted;
