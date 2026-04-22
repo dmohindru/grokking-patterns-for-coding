@@ -81,9 +81,9 @@ fn triple_sum_closest(mut input: Vec<i32>, target: i32) -> i32 {
     - Total time complexity: O(NLogN + N * N). Ignoring less significant fields, therefore O(N^2)
 
     Space Complexity
-    - Sorting input would require space O(N)
+    - Sorting input in rust is in place so space required is O(1)
     - Constant about of space is required for running the actual algorithm, hence O(1)
-    - Total space required, O(N)
+    - Total space required, O(1)
     */
     input.sort();
     let mut smallest_diff = i32::MAX;

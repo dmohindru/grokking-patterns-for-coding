@@ -28,7 +28,7 @@ fn triple_sum_two_pointer(mut input: Vec<i32>) -> Vec<Vec<i32>> {
 
     Space Complexity
     - This algorithm uses same amount of space irrespective of input size. Therefore O(1)
-    - Sorting requires O(N) additional space
+    - Sorting in rust is in place sort so no additional space is required. Therefore O(1)
     - To store the output triples. In worst case it can be O(N^2)
     - Therefore total: O(N^2)
     */
