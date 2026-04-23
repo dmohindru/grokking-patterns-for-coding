@@ -1,5 +1,6 @@
 mod dutch_national_flag;
 mod non_duplicate;
+mod quadruple_sum_zero;
 mod remove_instances;
 mod square_sorted;
 mod target_sum;
